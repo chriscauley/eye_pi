@@ -40,6 +40,7 @@ def get_input():
     output = {}
     for key,name in values:
         output[key] = number_input("What is the %s? "%name)
+    return output
 
 def parse_row(row):
     output = {'number': row[0]}
