@@ -19,24 +19,25 @@ def filter_cyl(qs,key,target):
   return qs.filter(**{key+"__gte":min_max[0],key+"__lte":min_max[1]})
 
 def filter_axis(qs,key,target):
-  axis_Q = Q()
+  axis_Q = models.Q()
   for gap in range(-540,540,180):
-    axis_Q = axis_Q | Q(**{key+"__gte":target+gap-20,key+"__lte":target+gap+20})
+    axis_Q = axis_Q | models.Q(**{key+"__gte":target+gap-20,key+"__lte":target+gap+20})
   return qs.filter(axis_Q)
 
-KEYS = ['r_sph','r_cyl','r_axis','l_sph','l_cyl','l_axis']
+KEYS = ['r_sph','r_cyl','r_axis','l_sph','l_cyl','l_axis'] #for xlx file
+DISPLAY_KEYS = ['l_sph','r_sph','l_cyl','r_cyl','l_axis','r_axis'] # for html 
 
 class PairManager(models.Manager):
   def filter(self,*args,**kwargs):
     values = {}
-    filters = (
-      ("r_sph", filter_sph),
-      ("r_cyl", filter_cyl),
-      ("r_axis", filter_axis),
-      ("l_sph", filter_sph),
-      ("l_cyl", filter_cyl),
-      ("l_axis", filter_axis),
-    )
+    filters = {
+      "r_sph": filter_sph,
+      "r_cyl": filter_cyl,
+      "r_axis": filter_axis,
+      "l_sph": filter_sph,
+      "l_cyl": filter_cyl,
+      "l_axis": filter_axis,
+    }
     for key in KEYS:
       values[key] = kwargs.pop(key,0)
     qs = super(PairManager,self).filter(*args,**kwargs)
@@ -62,13 +63,26 @@ class Pair(models.Model):
       s += " (%s)"%self.frame
     return s
 
+  def get_values(self):
+    """ Return a tuple of values for template. d_ attributes are from self.cache_differences."""
+    return [getattr(self,"cached_"+key) for key in DISPLAY_KEYS]
+  def cache_differences(self,query):
+    """ Calculate the differences between a query and a pair. """
+    for key in KEYS:
+      value = getattr(self,key)
+      target = float(query[key])
+      difference = getattr(self,key) - target
+      math = "%s %s %s"%(target,"+" if difference < 0 else "-",abs(difference))
+      t = (key,value,math,'')
+      setattr(self,"cached_"+key,t)
+
 def parse_row(row):
   output = {'number': row[0]}
   for i,value in enumerate(row[1:]):
     try:
       float(value)
     except ValueError:
-      print value,' is not a float'                                                                                          
+      print value,' is not a float'                                                                      
       return
     output[values[i][0]] = value
   return output

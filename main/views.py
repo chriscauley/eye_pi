@@ -8,7 +8,9 @@ def home(request):
   form = PairFilterForm(request.GET or None)
   queryset = []
   if form.is_valid():
-    queryset = form.get_queryset()
+    queryset = list(form.get_queryset())
+    for pair in queryset:
+      pair.cache_differences(request.REQUEST)
   values = {
     'form': form,
     'queryset': queryset,

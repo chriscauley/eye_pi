@@ -2,15 +2,32 @@
 {% load thumbnail %}
 
 {% block content %}
-<form method="GET" class="row">
-  {% for field in form %}
-  <div class="col-xs-6 form-group">
-    {{ field.label_tag }}
-    {{ field }}
+<div class="row">
+  <form method="GET">
+    {% for field in form %}
+    <div class="col-xs-6 form-group">
+      {{ field.label_tag }}
+      {{ field }}
+    </div>
+    {% endfor %}
+    <div class="row">
+      <center>
+        <button class="btn btn-success">Search</button>
+      </center>
+    </div>
+  </form>
+  <div class="search-results">
+    {% for pair in queryset %}
+    <div class="pair">
+      {% for key,value,math,klass in pair.get_values %}
+      <div class="value {{ key }} {{ klass }}">
+        <h2>{{ value }}</h2>
+        <div class="key">{{ key }}</div>
+        <div class="math">{{ math }}</div>
+        {% endfor %}
+      </div>
+      #{{ pair.number }}
+    </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</form>
-<div class="home-wrapper">
-
-</div>
 {% endblock %}

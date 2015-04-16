@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Pair
+from .models import Pair, DISPLAY_KEYS
 
 class PairFilterForm(forms.ModelForm):
   def __init__(self,*args,**kwargs):
@@ -11,8 +11,9 @@ class PairFilterForm(forms.ModelForm):
       field.widget.attrs['max'] = 180
       field.widget.attrs['min'] = -180
       field.widget.attrs['class'] = "form-control"
+      field.initial = 0
   def get_queryset(self):
     return Pair.objects.filter(**self.cleaned_data)
   class Meta:
     model = Pair
-    fields = ('l_sph','r_sph','r_cyl','l_cyl','l_axis','r_axis')
+    fields = DISPLAY_KEYS
