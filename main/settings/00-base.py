@@ -67,6 +67,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '../.media')
 LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = "/"
 
+LESS_EXECUTABLE = 'lessc'
+COMPRESS_PRECOMPILERS = (('text/less', 'lessc {infile} {outfile}'),)
+
 STATICFILES_FINDERS = (
   'django.contrib.staticfiles.finders.FileSystemFinder',
   'django.contrib.staticfiles.finders.AppDirectoriesFinder',

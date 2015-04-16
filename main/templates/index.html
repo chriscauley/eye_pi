@@ -2,7 +2,15 @@
 {% load thumbnail %}
 
 {% block content %}
+<form method="GET" class="row">
+  {% for field in form %}
+  <div class="col-xs-6 form-group">
+    {{ field.label_tag }}
+    {{ field }}
+  </div>
+  {% endfor %}
+</form>
 <div class="home-wrapper">
-Some Webpage!
+
 </div>
 {% endblock %}

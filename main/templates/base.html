@@ -9,12 +9,8 @@
     <meta name="author" content="{% block meta-author %}{% endblock %}">
     <meta name="application-name" content="">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    {# stock bootstrap for now #}
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     {% compress css %}
-    <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}less/base.less" />
+    <link rel="stylesheet" type="text/less" href="{{ STATIC_URL }}less/base.less" />
     {% endcompress %}
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/base.js"></script>
@@ -34,13 +30,10 @@
     <div id="wrapper">
       <header>
         {% block nav %}{% include "_nav.html" %}{% endblock %}
-        {% block header %}<h1>{% block header_content %}{% endblock %}</h1>{% endblock %}
       </header>
       <div id="content">
-	{% block content %}
-	<div id="main">{% block main %}{% endblock %}</div>
-	<div id="side">{% block side %}{% endblock %}</div>
-	{% endblock %}
+        {% block header %}<h1 id="content-header">{% block header_content %}{% endblock %}</h1>{% endblock %}
+        {% block content %}{% endblock %}
       </div>
       <footer id="footer">
         {% block footer %}{% include "_footer.html" %}{% endblock %}

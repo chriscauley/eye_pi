@@ -21,13 +21,14 @@ def filter_cyl(qs,key,target):
 def filter_axis(qs,key,target):
   axis_Q = Q()
   for gap in range(-540,540,180):
-    axis_Q = axis_Q | Q(key+"__gte":target+gap-20,key+"__lte":target+gap+20)
+    axis_Q = axis_Q | Q(**{key+"__gte":target+gap-20,key+"__lte":target+gap+20})
   return qs.filter(axis_Q)
+
+KEYS = ['r_sph','r_cyl','r_axis','l_sph','l_cyl','l_axis']
 
 class PairManager(models.Manager):
   def filter(self,*args,**kwargs):
     values = {}
-    keys = ['r_sph','r_cyl','r_axis','l_sph','l_cyl','l_axis']
     filters = (
       ("r_sph", filter_sph),
       ("r_cyl", filter_cyl),
@@ -36,20 +37,21 @@ class PairManager(models.Manager):
       ("l_cyl", filter_cyl),
       ("l_axis", filter_axis),
     )
-    for key in keys:
+    for key in KEYS:
       values[key] = kwargs.pop(key,0)
     qs = super(PairManager,self).filter(*args,**kwargs)
-    for key in keys:
+    for key in KEYS:
       qs = filters[key](qs,key,values[key])
     return qs
 
 class Pair(models.Model):
-  r_sph = models.FloatField("Right Sphere")
-  r_cyl = models.FloatField("Right Cylinder")
-  r_axis = models.IntegerField("Right Axis")
-  l_sph = models.FloatField("Left Sphere")
-  l_cyl = models.FloatField("Left Cylinder")
-  l_axis = models.IntegerField("Left Axis")
+  number = models.IntegerField()
+  r_sph = models.FloatField("Right Sphere",null=True,blank=True)
+  r_cyl = models.FloatField("Right Cylinder",null=True,blank=True)
+  r_axis = models.IntegerField("Right Axis",null=True,blank=True)
+  l_sph = models.FloatField("Left Sphere",null=True,blank=True)
+  l_cyl = models.FloatField("Left Cylinder",null=True,blank=True)
+  l_axis = models.IntegerField("Left Axis",null=True,blank=True)
   lens = models.CharField(max_length=32,null=True,blank=True)
   frame = models.CharField(max_length=32,null=True,blank=True)
 
@@ -59,3 +61,31 @@ class Pair(models.Model):
     if self.frame:
       s += " (%s)"%self.frame
     return s
+
+def parse_row(row):
+  output = {'number': row[0]}
+  for i,value in enumerate(row[1:]):
+    try:
+      float(value)
+    except ValueError:
+      print value,' is not a float'                                                                                          
+      return
+    output[values[i][0]] = value
+  return output
+
+def from_xlx(fname):
+  f = open(fname,'r')
+  xlrd.open_workbook(file_choice)
+  worksheet = workbook.sheet_by_name('Database')
+  glasses = []
+  total = 0
+  for i_r in range(1,worksheet.nrows):
+    row = [c.value for c in worksheet.row(i_r)]
+    if not row[1]:
+      continue
+      
+    pair = parse_row(row[:7])
+    total += 1
+    if pair:
+      glasses.append(pair)
+  print len(glasses)
