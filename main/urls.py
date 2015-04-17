@@ -11,6 +11,8 @@ urlpatterns = patterns(
   url(r'favicon.ico$', 'main.views.redirect',
       {'url': getattr(settings,'FAVICON','/static/favicon.png')}),
   url(r'^auth/',include('django.contrib.auth.urls')),
+  url(r'^select/(\d+)/','main.views.select'),
+  url(r'^unselect/(\d+)/','main.views.unselect'),
 )
 
 if settings.DEBUG:

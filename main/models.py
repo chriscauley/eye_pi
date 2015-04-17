@@ -56,6 +56,8 @@ class Pair(models.Model):
   lens = models.CharField(max_length=32,null=True,blank=True)
   frame = models.CharField(max_length=32,null=True,blank=True)
 
+  selected = models.BooleanField(default=False)
+
   objects = PairManager()
   def __unicode__(self):
     s = "%s + %s x %s \n \n%s + %s x %s"%(self.l_sph,self.l_cyl,self.l_axis,self.r_sph,self.r_cyl,self.r_axis)
@@ -73,7 +75,14 @@ class Pair(models.Model):
       target = float(query[key])
       difference = getattr(self,key) - target
       math = "%s %s %s"%(target,"+" if difference < 0 else "-",abs(difference))
-      t = (key,value,math,'')
+
+      # klass tells how far off difference is (to color square)
+      # sph and cyl uses 0.25 while axis uses 10 degrees
+      if 'axis' in key:
+        klass = int(min(abs(difference/10),5))
+      else:
+        klass = int(min(abs(difference/0.25),5))
+      t = (key,value,math,klass)
       setattr(self,"cached_"+key,t)
 
 def parse_row(row):

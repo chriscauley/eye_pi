@@ -16,18 +16,55 @@
       </center>
     </div>
   </form>
-  <div class="search-results">
+  <div class="search-results col-xs-8 col-xs-offset-2">
     {% for pair in queryset %}
-    <div class="pair">
-      {% for key,value,math,klass in pair.get_values %}
-      <div class="value {{ key }} {{ klass }}">
-        <h2>{{ value }}</h2>
-        <div class="key">{{ key }}</div>
-        <div class="math">{{ math }}</div>
-        {% endfor %}
+    <div class="pair text-center" id="pair-{{ pair.pk }}">
+      <div class="well">
+        <div class="row">
+          {% for key,value,math,klass in pair.get_values %}
+          <div class="value {{ key }} {{ klass }} col-xs-6 klass-{{ klass }}">
+            <h2>{{ value }}</h2>
+            <div class="key">{{ key }}</div>
+            <div class="math">{{ math }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <h2>
+          #{{ pair.number }}
+          <small>{{ pair.lense|default_if_none:"" }} {{ pair.frame|default_if_none:"" }}</small>
+        </h2>
+        <div>
+          <button class="btn btn-success select" onclick="selectPair({{ pair.pk }});return false;">
+            Select</button>
+          <button class="btn btn-danger undo" onclick="unselectPair({{ pair.pk }}); return false;">
+            Undo</button>
+        </div>
+        <div class="load-icon"><i class="fa fa-spinner fa-spin"></i></div>
       </div>
-      #{{ pair.number }}
     </div>
     {% endfor %}
   </div>
+</div>
+<script>
+function selectPair(pk) {
+  var element = $("#pair-"+pk);
+  element.addClass('loading');
+  $.post(
+    '/select/'+pk+'/',
+    function(data) {
+      element.removeClass('loading').addClass('selected');
+    }
+  );
+}
+function unselectPair(pk) {
+  var element = $("#pair-"+pk);
+  element.addClass('loading');
+  $.post(
+    '/unselect/'+pk+'/',
+    function(data) {
+      element.removeClass('loading').removeClass('selected');
+    }
+  );
+}
+</script>
 {% endblock %}

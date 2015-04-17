@@ -1,5 +1,6 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template.response import TemplateResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Pair
 from .forms import PairFilterForm
@@ -18,3 +19,17 @@ def home(request):
   return TemplateResponse(request,"index.html",values)
 
 redirect = lambda request,url: HttpResponseRedirect(url)
+
+@csrf_exempt
+def select(request,pk):
+  pair = Pair.objects.get(pk=pk)
+  pair.selected = True
+  pair.save()
+  return HttpResponse('')
+
+@csrf_exempt
+def unselect(request,pk):
+  pair = Pair.objects.get(pk=pk)
+  pair.selected = False
+  pair.save()
+  return HttpResponse('')

@@ -13,7 +13,7 @@ class PairFilterForm(forms.ModelForm):
       field.widget.attrs['class'] = "form-control"
       field.initial = 0
   def get_queryset(self):
-    return Pair.objects.filter(**self.cleaned_data)
+    return Pair.objects.filter(selected=False,**self.cleaned_data)
   class Meta:
     model = Pair
     fields = DISPLAY_KEYS
