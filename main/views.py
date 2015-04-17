@@ -10,6 +10,8 @@ def home(request):
   queryset = []
   if form.is_valid():
     queryset = list(form.get_queryset())
+    if "rando" in request.GET:
+      queryset = list(Pair.objects.order_by("?")[:50])
     for pair in queryset:
       pair.cache_differences(request.REQUEST)
   values = {

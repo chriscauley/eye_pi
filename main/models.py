@@ -73,6 +73,10 @@ class Pair(models.Model):
     for key in KEYS:
       value = getattr(self,key)
       target = float(query[key])
+      if value == None: #value is unknown
+        t = (key,"?","unknown","unknown")
+        setattr(self,"cached_"+key,t)
+        continue
       difference = getattr(self,key) - target
       math = "%s %s %s"%(target,"+" if difference < 0 else "-",abs(difference))
 
