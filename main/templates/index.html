@@ -3,9 +3,9 @@
 
 {% block content %}
 <div class="row">
-  <form method="GET">
+  <form method="GET" id="search-form">
     {% for field in form %}
-    <div class="col-xs-6 form-group">
+    <div class="col-xs-4 form-group">
       {{ field.label_tag }}
       {{ field }}
     </div>
@@ -18,13 +18,13 @@
   </form>
 </div>
 <div class="row">
-  <div class="search-results col-xs-8 col-xs-offset-2">
+  <div class="search-results col-xs-12">
     {% for pair in queryset %}
     <div class="pair text-center" id="pair-{{ pair.pk }}">
       <div class="well">
         <div class="row">
           {% for key,value,math,klass in pair.get_values %}
-          <div class="value {{ key }} {{ klass }} col-xs-6 klass-{{ klass }}">
+          <div class="value {{ key }} {{ klass }} col-xs-4 klass-{{ klass }}">
             <h2>{{ value }}</h2>
             <div class="key">{{ key }}</div>
             <div class="math">{{ math }}</div>
