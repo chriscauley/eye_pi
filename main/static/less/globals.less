@@ -27,3 +27,31 @@ p a { text-decoration: underline; }
 ul,ol { list-style: none; margin: 0; padding: 0; }
 
 img,input { max-width: 100%; }
+
+.pair {
+  .undo { display: none; }
+  &.selected {
+    .select { display: none; }
+    .undo { display: inline-block; }
+  }
+}
+
+.pair {
+  position: relative;
+  .load-icon { display: none; }
+  .load-icon {
+    background: rgba(32,32,32,0.9);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    i {
+      font-size: 75px;
+      margin-top: 200px;
+    }
+  }
+  &.loading {
+    .load-icon { display: block; }
+  }
+}
