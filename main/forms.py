@@ -16,4 +16,4 @@ class PairFilterForm(forms.ModelForm):
     return Pair.objects.filter(selected=False,**self.cleaned_data)
   class Meta:
     model = Pair
-    fields = DISPLAY_KEYS
+    fields = DISPLAY_KEYS #+ ['number']

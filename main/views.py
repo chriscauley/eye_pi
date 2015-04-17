@@ -9,11 +9,13 @@ def home(request):
   form = PairFilterForm(request.GET or None)
   queryset = []
   if form.is_valid():
-    queryset = list(form.get_queryset())
+    queryset = form.get_queryset()
     if "rando" in request.GET:
-      queryset = list(Pair.objects.order_by("?")[:50])
+      queryset = Pair.objects.order_by("?")
+    queryset = list(queryset)[:50]
     for pair in queryset:
       pair.cache_differences(request.REQUEST)
+    queryset = sorted(queryset,key=lambda p: p.cached_distance)
   values = {
     'form': form,
     'queryset': queryset,
