@@ -29,13 +29,12 @@ def range_cyl(qs,key,targets):
     return [target,0]
 
 def filter_cyl(qs,key,targets):
-  return qs
   min_max = range_cyl(qs,key,targets)
   return qs.filter(**{key+"__gte":min_max[0],key+"__lte":min_max[1]})
 
 def filter_axis(qs,key,targets):
   target = targets[key]
-  axis_Q = models.Q()
+  axis_Q = models.Q(**{key:0})
   for gap in range(-540,540,180):
     axis_Q = axis_Q | models.Q(**{key+"__gte":target+gap-20,key+"__lte":target+gap+20})
   return qs.filter(axis_Q)

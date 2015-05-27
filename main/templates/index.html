@@ -19,6 +19,15 @@
 </div>
 <div class="row">
   <div class="search-results col-xs-12">
+    {% if form.errors %}
+    Please correct the following error(s):
+    <ul>
+      {% for fname,error in form.errors.items %}
+      <li class="btn btn-danger" style="display: block;">{{ fname }}: {{ error|join:' ' }}</li>
+      {% endfor %}
+    </ul>
+    <div style="clear:both;"></div>
+    {% endif %}
     {% for pair in queryset %}
     <div class="pair text-center" id="pair-{{ pair.pk }}">
       <div class="well">
