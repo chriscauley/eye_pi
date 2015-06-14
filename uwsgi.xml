@@ -10,6 +10,6 @@
   <plugin>python</plugin>
   <harakiri>180</harakiri>
   <socket-timeout>180</socket-timeout>
-  <pidfile>/tmp/eyepy_uwsgi.pid</pidfile>
+  <pidfile>/tmp/eye_pi_uwsgi.pid</pidfile>
   <module>django_uwsgi:application</module>
 </uwsgi>
