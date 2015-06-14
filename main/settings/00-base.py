@@ -54,6 +54,7 @@ DATABASES = {
   }
 }
 
+ALLOWED_HOSTS = ('*',)
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
