@@ -35,14 +35,16 @@ Now syncdb. You'll be asked to make a superuser and you should. If not you can m
 
 ```
 python manage.py syncdb
-python manage.py collectstatic
+python manage.py collectstatic --noinput
 ```
 
 Find out what directory you are in, this will be needed in a million places after this:
 
 `pwd`
 
-It should be /home/django/eye_pi/, if not you'll see references to that which you'll need to change.
+It should be /home/django/eye_pi/, ~~if not you'll see references to that which you'll need to change.~~ If not just make /home/django and move eye_pi there. There are too many references to /home/django for me to test out this hypothetical.
+
+Now server config:
 
 ```
 sudo rm /etc/nginx/sites-enabled/default 
@@ -53,4 +55,6 @@ Next add this line to /etc/rc.local above `exit 0`
 
 `su django -c 'bash /home/django/eye_pi/scripts/uwsgi.sh' &`
 
-And that should be it! Restart your pi and it should be running nginx which points to a uwsgi instance which is running eye_pi.
+And that should be it! Restart your pi and it should be running nginx which points to a uwsgi instance which is running eye_pi. If you know the ip you can just go the ip in a browser on any computer on that network. Ideally you will turn the raspberry pi into a router and make it so every request to said router will just be directed to localhost.
+
+I still need to write the script to import the glasses, but that should be enough to get you going.
