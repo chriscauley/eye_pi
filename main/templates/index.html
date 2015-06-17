@@ -2,7 +2,7 @@
 {% load thumbnail %}
 
 {% block content %}
-<div class="row">
+<div class="row box">
   <form method="GET" id="search-form">
     {% for field in form %}
     <div class="col-xs-4 form-group">
@@ -17,8 +17,8 @@
     </div>
   </form>
 </div>
-<div class="row">
-  <div class="search-results col-xs-12">
+<div>
+  <div class="search-results">
     {% if form.errors %}
     Please correct the following error(s):
     <ul>
@@ -29,7 +29,7 @@
     <div style="clear:both;"></div>
     {% endif %}
     {% for pair in queryset %}
-    <div class="pair text-center" id="pair-{{ pair.pk }}">
+    <div class="pair text-center box" id="pair-{{ pair.pk }}">
       <div class="well">
         <div class="row">
           {% for key,value,math,klass in pair.get_values %}
