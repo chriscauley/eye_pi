@@ -1,7 +1,7 @@
 <uwsgi>
   <pythonpath>/home/django/</pythonpath>
-  <pythonpath>/home/django/{{ project_name }}/</pythonpath>
-  <chdir>/home/django/{{ project_name }}/</chdir>
+  <pythonpath>/home/django/eye_pi/</pythonpath>
+  <chdir>/home/django/eye_pi/</chdir>
   <socket>127.0.0.1:3031</socket>
   <processes>2</processes>
   <app mountpoint="/">
@@ -10,6 +10,6 @@
   <plugin>python</plugin>
   <harakiri>180</harakiri>
   <socket-timeout>180</socket-timeout>
-  <pidfile>/tmp/modifie3d_uwsgi.pid</pidfile>
+  <pidfile>/tmp/eye_pi_uwsgi.pid</pidfile>
   <module>django_uwsgi:application</module>
 </uwsgi>

@@ -66,10 +66,10 @@ class PairManager(models.Manager):
 class Pair(models.Model):
   number = models.IntegerField()
   r_sph = models.FloatField("Right Sphere",null=True,blank=True)
-  r_cyl = models.FloatField("Right Cylinder",null=True,blank=True)
+  r_cyl = models.FloatField("Right Cyl",null=True,blank=True)
   r_axis = models.IntegerField("Right Axis",null=True,blank=True)
   l_sph = models.FloatField("Left Sphere",null=True,blank=True)
-  l_cyl = models.FloatField("Left Cylinder",null=True,blank=True)
+  l_cyl = models.FloatField("Left Cyl",null=True,blank=True)
   l_axis = models.IntegerField("Left Axis",null=True,blank=True)
   lens = models.CharField(max_length=32,null=True,blank=True)
   frame = models.CharField(max_length=32,null=True,blank=True)
