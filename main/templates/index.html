@@ -3,6 +3,9 @@
 
 {% block content %}
 <div class="row box">
+  {% if request.user.is_superuser %}
+  <a href="/import/" class="btn btn-primary">Upload XLS file</a>
+  {% endif %}
   <form method="GET" id="search-form">
     {% for field in form %}
     <div class="col-xs-4 form-group">
