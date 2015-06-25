@@ -16,6 +16,9 @@ def validate_number(value):
   except TypeError:
     raise forms.ValidationError("Please enter a number.")
 
+def c(s):
+  return s.replace("+","").replace(" ",'')
+
 class PairFilterForm(forms.ModelForm):
   def __init__(self,*args,**kwargs):
     super(PairFilterForm,self).__init__(*args,**kwargs)
@@ -32,38 +35,41 @@ class PairFilterForm(forms.ModelForm):
     return Pair.objects.filter(selected=False,**self.cleaned_data)
 
   def clean_r_cyl(self,*args,**kwargs):
-    value = self.cleaned_data.get("r_cyl",None)
+    value = c(self.cleaned_data.get("r_cyl",None))
     validate_number(value)
     validate_25(value)
     validate_neg(value)
     return float(value)
   def clean_l_cyl(self,*args,**kwargs):
-    value = self.cleaned_data.get("l_cyl",None)
+    value = c(self.cleaned_data.get("l_cyl",None))
     validate_number(value)
     validate_25(value)
     validate_neg(value)
     return float(value)
 
   def clean_r_sph(self,*args,**kwargs):
-    value = self.cleaned_data.get("r_sph",None)
+    value = c(self.cleaned_data.get("r_sph",None))
     validate_number(value)
     validate_25(value)
     return float(value)
   def clean_l_sph(self,*args,**kwargs):
-    value = self.cleaned_data.get("l_sph",None)
+    value = c(self.cleaned_data.get("l_sph",None))
     validate_number(value)
     validate_25(value)
     return float(value)
 
   def clean_r_axis(self,*args,**kwargs):
-    value = self.cleaned_data.get("r_axis",None)
+    value = c(self.cleaned_data.get("r_axis",None))
     validate_number(value)
     return float(value)
   def clean_l_axis(self,*args,**kwargs):
-    value = self.cleaned_data.get("l_axis",None)
+    value = c(self.cleaned_data.get("l_axis",None))
     validate_number(value)
     return float(value)
 
   class Meta:
     model = Pair
     fields = DISPLAY_KEYS #+ ['number']
+
+class ImportForm(forms.Form):
+  xls = forms.FileField()

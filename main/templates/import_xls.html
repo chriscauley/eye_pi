@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="POST" enctype='multipart/form-data' class="col-sm-4 col-sm-offset-4">
+  {% csrf_token %}
+  {{ form.xls }}
+  <button class="btn btn-success">Save</button>
+</form>
+{% endblock %}

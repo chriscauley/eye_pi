@@ -12,25 +12,28 @@ def parse_row(row):
     output[KEYS[i]] = value
   return output
 
-def from_xlx(fname):
-  f = open(fname,'r')
-  workbook = xlrd.open_workbook(fname)
+def from_xlx(f):
+  workbook = xlrd.open_workbook(f)
   worksheet = workbook.sheet_by_name('Database')
   glasses = []
-  total = 0
   for i_r in range(1,worksheet.nrows):
     row = [c.value for c in worksheet.row(i_r)]
     if not row[1]:
       continue
 
     pair = parse_row(row[:7])
-    total += 1
     if pair:
       glasses.append(pair)
+  total = 0
+  dups = 0
   for glass in glasses:
+    print glass
     pair,new = Pair.objects.get_or_create(**glass)
-    if not new:
-      print "Duplicate detected %s"%glass
+    if new:
+      total += 1
+    else:
+      dups += 1
+  return total,dups
 
 def cached_method(target,name=None):
   target.__name__ = name or target.__name__

@@ -13,6 +13,7 @@ urlpatterns = patterns(
   url(r'^auth/',include('django.contrib.auth.urls')),
   url(r'^select/(\d+)/','main.views.select'),
   url(r'^unselect/(\d+)/','main.views.unselect'),
+  url(r'^import/$','main.views.import_xls'),
 )
 
 if settings.DEBUG:
