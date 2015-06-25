@@ -47,38 +47,9 @@
           #{{ pair.number }}
           <small>{{ pair.lense|default_if_none:"" }} {{ pair.frame|default_if_none:"" }}</small>
         </h2>
-        <div>
-          <button class="btn btn-success select" onclick="selectPair({{ pair.pk }});return false;">
-            Select</button>
-          <button class="btn btn-danger undo" onclick="unselectPair({{ pair.pk }}); return false;">
-            Undo</button>
-        </div>
-        <div class="load-icon"><i class="fa fa-spinner fa-spin"></i></div>
       </div>
     </div>
     {% endfor %}
   </div>
 </div>
-<script>
-function selectPair(pk) {
-  var element = $("#pair-"+pk);
-  element.addClass('loading');
-  $.post(
-    '/select/'+pk+'/',
-    function(data) {
-      element.removeClass('loading').addClass('selected');
-    }
-  );
-}
-function unselectPair(pk) {
-  var element = $("#pair-"+pk);
-  element.addClass('loading');
-  $.post(
-    '/unselect/'+pk+'/',
-    function(data) {
-      element.removeClass('loading').removeClass('selected');
-    }
-  );
-}
-</script>
 {% endblock %}
